@@ -40,12 +40,26 @@ object Numerals {
    */
 
 
-  def num2String (x: Long) = {
-    require (x < math.pow (10, MAX_POWER), "To large number...")
+  def num2Str (x: Long) : String =
+    num2Str(BigInt(x))
+
+
+  /**
+   * Convert x to it's string equivalent
+   * @param x number to be converted
+   * @return converted number to string
+   * @throws IllegalArgumentException if number > 10^21^
+   */
+
+
+  def num2Str (x : BigInt) : String = {
+    require (x < BigInt(10).pow(MAX_POWER), "To large number...")
+
     if (0 == x) "ноль"
     else if (x < 0)
-      "минус " + positiveNum2Str (-x) dropRight 1
-    else positiveNum2Str (x) dropRight 1
+      "минус " + positiveBigInt2Str (-x) dropRight 1
+    else positiveBigInt2Str (x) dropRight 1
+
   }
 
 
@@ -56,16 +70,15 @@ object Numerals {
    */
 
 
-  private def positiveNum2Str (x: Long) = {
-    require (x > 0, "x must be a positive number!")
+  private def positiveBigInt2Str (x : BigInt) = {
+    require (x > BigInt(0), "x must be a positive number!")
 
     val result = new StringBuilder
     val maxPower = x.toString.length - x.toString.length % 3
 
     for (p <- maxPower to 0 by -3) {
-
-      val h = (x % math.pow (10, p + 3).toLong / math.pow (10, p).toLong).toInt
-      result.append (hundreds2Str (h, powers (p / 3)(0).toInt))
+      val h = (x % BigInt(10).pow(p+3) / BigInt(10).pow(p)).toInt
+      if (0 != h) result.append (hundreds2Str (h, powers (p / 3)(0).toInt))
       h match {
         case 0 =>
         case 1 => result append (powers (p / 3)(1))
@@ -74,6 +87,7 @@ object Numerals {
       }
     }
     result.toString ()
+
   }
 
 
