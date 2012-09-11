@@ -6,7 +6,22 @@ package ru.numerals
  * Time: 3:39 PM
  */
 
+
+object Gender extends Enumeration {
+  type Gender = Value
+  val Masculine = Value(0)
+  val Feminine = Value(1)
+  val Neuter = Value(2)
+}
+
+object TransferState extends Enumeration {
+  type TransferState = Value
+  val Canceled, Created, Prepared, Edited, Committed, Sent, Received = Value
+}
+
+
 object Numerals {
+  import Gender._
   private val MAX_POWER = 21
 
   private val powers = List (
@@ -33,6 +48,7 @@ object Numerals {
   )
 
 
+
   /**
    * Convert x to it's string equivalent
    * @param x number to be converted
@@ -40,26 +56,27 @@ object Numerals {
    */
 
 
-  def num2Str (x: Long) : String =
-    num2Str(BigInt(x))
+  def num2Str (x: Long, gender : Gender = Masculine) : String =
+    num2Str(BigInt(x),gender)
 
 
   /**
    * Convert x to it's string equivalent
    * @param x number to be converted
+   * @param gender providing right suffix to numeral string,
+   *               default is Masculine
    * @return converted number to string
    * @throws IllegalArgumentException if number > 10^21^
    */
 
 
-  def num2Str (x : BigInt) : String = {
+  def num2Str (x : BigInt, gender : Gender = Masculine) : String = {
     require (x < BigInt(10).pow(MAX_POWER), "To large number...")
 
     if (0 == x) "ноль"
     else if (x < 0)
-      "минус " + positiveBigInt2Str (-x) dropRight 1
-    else positiveBigInt2Str (x) dropRight 1
-
+      "минус " + positiveBigInt2Str (-x,gender) dropRight 1
+    else positiveBigInt2Str (x,gender) dropRight 1
   }
 
 
@@ -70,15 +87,17 @@ object Numerals {
    */
 
 
-  private def positiveBigInt2Str (x : BigInt) = {
+  private def positiveBigInt2Str (x : BigInt, gender : Gender) = {
     require (x > BigInt(0), "x must be a positive number!")
 
     val result = new StringBuilder
-    val maxPower = x.toString.length - x.toString.length % 3
+    val maxPower = x.toString ().length - x.toString ().length % 3
 
     for (p <- maxPower to 0 by -3) {
+      val g = if (0 == p) gender.id else powers (p / 3)(0).toInt
+
       val h = (x % BigInt(10).pow(p+3) / BigInt(10).pow(p)).toInt
-      if (0 != h) result.append (hundreds2Str (h, powers (p / 3)(0).toInt))
+      if (0 != h) result.append (hundreds2Str (h, g))
       h match {
         case 0 =>
         case 1 => result append (powers (p / 3)(1))
