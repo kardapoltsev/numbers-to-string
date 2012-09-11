@@ -1,0 +1,102 @@
+<project name="numerals-to-string" default="build" basedir=".">
+    <description>
+        example build file
+    </description>
+
+    <path id="master-classpath">
+    </path>
+
+    <property name="sources.dir" value="src" />
+    <property name="build.dir" value="build" />
+    <property name="lib.dir" value="lib" />
+    <property file="build.properties" />
+
+  <target name="init">
+    <property
+      name="scala-library.jar"
+      value="${scala.home}/lib/scala-library.jar"
+       />
+    <path id="build.classpath">
+      <pathelement location="${scala-library.jar}"   />
+      <!--<pathelement location="${your.path}"   />-->
+      <pathelement location="${build.dir}"   />
+    </path>
+    <taskdef resource="scala/tools/ant/antlib.xml">
+      <classpath>
+        <pathelement location="${scala.home}/lib/scala-compiler.jar"   />
+        <pathelement location="${scala-library.jar}"   />
+      </classpath>
+    </taskdef>
+  </target>
+
+
+    <target name="build" depends="init">
+        <mkdir dir="${build.dir}"/>
+               <mkdir dir="${lib.dir}"/>
+    <scalac srcdir="${sources.dir}"
+            destdir="${build.dir}"
+            classpathref="build.classpath">
+      <include name="**/*.scala"   />
+      <exclude name="Test.scala"   />
+    </scalac>
+  </target>
+
+
+    <target name="make-jar"
+    description="Creates jar file with library"
+    depends="build">
+    <jar destfile="${lib.dir}/num2Str.jar"
+    basedir="${build.dir}"
+    includes="**/*/*.class"
+    excludes="**/Test.class" />
+    </target>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!--<target name="javadoc">-->
+                <!--<mkdir dir="${basedir}/doc"/>-->
+        <!--<mkdir dir="${basedir}/doc/api"/>-->
+<!---->
+        <!--<javadoc sourcepath="${basedir}/src"-->
+                 <!--destdir="${basedir}/doc/api">-->
+            <!--<fileset dir="${basedir}/src"-->
+                     <!--includes="**/*.scala"-->
+                    <!--excludes="**/Test.scala"/>-->
+        <!--</javadoc>-->
+    <!--</target>-->
+
+
+    <!--<target name="make-doc-jar"-->
+            <!--description="Creates jar file with project documentation"-->
+            <!--depends="javadoc">-->
+                <!--<jar destfile="${lib}/num2Str-doc.jar"-->
+             <!--basedir="${basedir}/doc"-->
+             <!--includes="**/*" />-->
+        <!--</target>-->
+
+        <target name="clean"
+            description="Clean build files">
+                <delete dir="${build.dir}"/>
+                <delete dir="${lib.dir}"/>
+        <!--<delete dir="${basedir}/doc/api"/>-->
+        </target>
+</project>

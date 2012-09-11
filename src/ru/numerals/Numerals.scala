@@ -3,50 +3,38 @@ package ru.numerals
 /**
  * Created with IntelliJ IDEA.
  * Date: 9/10/12
- * Time: 3:39 PM
+ * Time: 8:47 PM
  */
 
 
-object Gender extends Enumeration {
-  type Gender = Value
-  val Masculine = Value(0)
-  val Feminine = Value(1)
-  val Neuter = Value(2)
-}
-
-object TransferState extends Enumeration {
-  type TransferState = Value
-  val Canceled, Created, Prepared, Edited, Committed, Sent, Received = Value
-}
-
-
 object Numerals {
+
   import Gender._
+
   private val MAX_POWER = 21
 
   private val powers = List (
-    List ("0", ""            , ""             ,""              ),  // 1
-    List ("1", "тысяча "     , "тысячи "      ,"тысяч "        ),  // 2
-    List ("0", "миллион "    , "миллиона "    ,"миллионов "    ),  // 3
-    List ("0", "миллиард "   , "миллиарда "   ,"миллиардов "   ),  // 4
-    List ("0", "триллион "   , "триллиона "   ,"триллионов "   ),  // 5
-    List ("0", "квадриллион ", "квадриллиона ","квадриллионов "),  // 6
-    List ("0", "квинтиллион ", "квинтиллиона ","квинтиллионов ")   // 7
+    List ("0", "", "", ""), // 1
+    List ("1", "тысяча ", "тысячи ", "тысяч "), // 2
+    List ("0", "миллион ", "миллиона ", "миллионов "), // 3
+    List ("0", "миллиард ", "миллиарда ", "миллиардов "), // 4
+    List ("0", "триллион ", "триллиона ", "триллионов "), // 5
+    List ("0", "квадриллион ", "квадриллиона ", "квадриллионов "), // 6
+    List ("0", "квинтиллион ", "квинтиллиона ", "квинтиллионов ") // 7
   )
 
   private val digits = List (
-    List (""       ,""       , "десять "      , ""            ,""          ),
-    List ("один "  ,"одна "  , "одиннадцать " , "десять "     ,"сто "      ),
-    List ("два "   ,"две "   , "двенадцать "  , "двадцать "   ,"двести "   ),
-    List ("три "   ,"три "   , "тринадцать "  , "тридцать "   ,"триста "   ),
-    List ("четыре ","четыре ", "четырнадцать ", "сорок "      ,"четыреста "),
-    List ("пять "  ,"пять "  , "пятнадцать "  , "пятьдесят "  ,"пятьсот "  ),
-    List ("шесть " ,"шесть " , "шестнадцать " , "шестьдесят " ,"шестьсот " ),
-    List ("семь "  ,"семь "  , "семнадцать "  , "семьдесят "  ,"семьсот "  ),
-    List ("восемь ","восемь ", "восемнадцать ", "восемьдесят ","восемьсот "),
-    List ("девять ","девять ", "девятнадцать ", "девяносто "  ,"девятьсот ")
+    List ("", "", "десять ", "", ""),
+    List ("один ", "одна ", "одиннадцать ", "десять ", "сто "),
+    List ("два ", "две ", "двенадцать ", "двадцать ", "двести "),
+    List ("три ", "три ", "тринадцать ", "тридцать ", "триста "),
+    List ("четыре ", "четыре ", "четырнадцать ", "сорок ", "четыреста "),
+    List ("пять ", "пять ", "пятнадцать ", "пятьдесят ", "пятьсот "),
+    List ("шесть ", "шесть ", "шестнадцать ", "шестьдесят ", "шестьсот "),
+    List ("семь ", "семь ", "семнадцать ", "семьдесят ", "семьсот "),
+    List ("восемь ", "восемь ", "восемнадцать ", "восемьдесят ", "восемьсот "),
+    List ("девять ", "девять ", "девятнадцать ", "девяносто ", "девятьсот ")
   )
-
 
 
   /**
@@ -56,8 +44,11 @@ object Numerals {
    */
 
 
-  def num2Str (x: Long, gender : Gender = Masculine) : String =
-    num2Str(BigInt(x),gender)
+  def num2Str (x: Long): String = num2Str (BigInt (x))
+
+
+  def num2Str (x: Long, gender: Gender): String =
+    num2Str (BigInt (x), gender)
 
 
   /**
@@ -70,13 +61,13 @@ object Numerals {
    */
 
 
-  def num2Str (x : BigInt, gender : Gender = Masculine) : String = {
-    require (x < BigInt(10).pow(MAX_POWER), "To large number...")
+  def num2Str (x: BigInt, gender: Gender = Masculine): String = {
+    require (x < BigInt (10).pow (MAX_POWER), "To large number...")
 
     if (0 == x) "ноль"
     else if (x < 0)
-      "минус " + positiveBigInt2Str (-x,gender) dropRight 1
-    else positiveBigInt2Str (x,gender) dropRight 1
+      "минус " + positiveBigInt2Str (-x, gender) dropRight 1
+    else positiveBigInt2Str (x, gender) dropRight 1
   }
 
 
@@ -87,8 +78,8 @@ object Numerals {
    */
 
 
-  private def positiveBigInt2Str (x : BigInt, gender : Gender) = {
-    require (x > BigInt(0), "x must be a positive number!")
+  private def positiveBigInt2Str (x: BigInt, gender: Gender) = {
+    require (x > BigInt (0), "x must be a positive number!")
 
     val result = new StringBuilder
     val maxPower = x.toString ().length - x.toString ().length % 3
@@ -96,7 +87,7 @@ object Numerals {
     for (p <- maxPower to 0 by -3) {
       val g = if (0 == p) gender.id else powers (p / 3)(0).toInt
 
-      val h = (x % BigInt(10).pow(p+3) / BigInt(10).pow(p)).toInt
+      val h = (x % BigInt (10).pow (p + 3) / BigInt (10).pow (p)).toInt
       if (0 != h) result.append (hundreds2Str (h, g))
       h match {
         case 0 =>
@@ -106,7 +97,6 @@ object Numerals {
       }
     }
     result.toString ()
-
   }
 
 
