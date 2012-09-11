@@ -24,17 +24,27 @@ object Numerals {
   )
 
   private val digits = List (
-    List ("", "", "десять ", "", ""),
-    List ("один ", "одна ", "одиннадцать ", "десять ", "сто "),
-    List ("два ", "две ", "двенадцать ", "двадцать ", "двести "),
-    List ("три ", "три ", "тринадцать ", "тридцать ", "триста "),
-    List ("четыре ", "четыре ", "четырнадцать ", "сорок ", "четыреста "),
-    List ("пять ", "пять ", "пятнадцать ", "пятьдесят ", "пятьсот "),
-    List ("шесть ", "шесть ", "шестнадцать ", "шестьдесят ", "шестьсот "),
-    List ("семь ", "семь ", "семнадцать ", "семьдесят ", "семьсот "),
-    List ("восемь ", "восемь ", "восемнадцать ", "восемьдесят ", "восемьсот "),
-    List ("девять ", "девять ", "девятнадцать ", "девяносто ", "девятьсот ")
+    List ("",      "",     "", "десять ", "", ""),
+    List ("один ", "одна ", "одно ", "одиннадцать ", "десять ", "сто "),
+    List ("два ", "две ", "два ", "двенадцать ", "двадцать ", "двести "),
+    List ("три ", "три ", "три ", "тринадцать ", "тридцать ", "триста "),
+    List ("четыре ", "четыре ","четыре ", "четырнадцать ", "сорок ", "четыреста "),
+    List ("пять ", "пять ","пять ", "пятнадцать ", "пятьдесят ", "пятьсот "),
+    List ("шесть ", "шесть ","шесть ", "шестнадцать ", "шестьдесят ", "шестьсот "),
+    List ("семь ", "семь ", "семь ", "семнадцать ", "семьдесят ", "семьсот "),
+    List ("восемь ", "восемь ","восемь ", "восемнадцать ", "восемьдесят ", "восемьсот "),
+    List ("девять ", "девять ","девять ", "девятнадцать ", "девяносто ", "девятьсот ")
   )
+
+
+  /**
+   * Convert x to it's string equivalent
+   * @param x number to be converted
+   * @return converted number to string
+   */
+
+
+  def num2Str (x: String): String = num2Str (BigInt (x))
 
 
   /**
@@ -85,14 +95,14 @@ object Numerals {
     val maxPower = x.toString ().length - x.toString ().length % 3
 
     for (p <- maxPower to 0 by -3) {
-      val g = if (0 == p) gender.id else powers (p / 3)(0).toInt
+      val  g = if (0 == p) gender else Gender(powers (p / 3)(0).toInt)
 
       val h = (x % BigInt (10).pow (p + 3) / BigInt (10).pow (p)).toInt
       if (0 != h) result.append (hundreds2Str (h, g))
-      h match {
+      h%10 match {
         case 0 =>
         case 1 => result append (powers (p / 3)(1))
-        case y if (List (2, 3, 4).contains (y)) => result append (powers (p / 3)(2))
+        case y if Set (2, 3, 4) contains  y => result append (powers (p / 3)(2))
         case _ => result append (powers (p / 3)(3))
       }
     }
@@ -108,25 +118,24 @@ object Numerals {
    */
 
 
-  private def hundreds2Str (x: Int, gender: Int) = {
+  private def hundreds2Str (x: Int, gender: Gender) = {
     require (
-      (0 <= x && 999 > x),
+      (0 <= x && 1000 > x),
       "x must be between 0 and 999, but passed %d" format (x))
-    require (
-      (0 == gender || 1 == gender),
-      "Gender may be only 0 or 1, but passed %d" format (gender))
 
     val result = new StringBuilder
 
-    result append digits (x / 100)(4)
+    result append digits (x / 100)(5)
+
+//    println("Converting %d with gender %s".format (x,gender))
 
     x % 100 / 10 match {
       case y if y > 1 => {
-        result append digits (y)(3)
-        result append digits (x % 10)(0)
+        result append digits (y)(4)
+        result append digits (x % 10)(gender.id)
       }
-      case 1 => result append digits (x % 10)(2)
-      case 0 => result append digits (x % 10)(gender)
+      case 1 => result append digits (x % 10)(3)
+      case 0 => result append digits (x % 10)(gender.id)
     }
     result toString()
   }

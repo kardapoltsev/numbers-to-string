@@ -1,3 +1,4 @@
+import ru.numerals.Gender
 import ru.numerals.Numerals._
 import ru.numerals.Money._
 
@@ -10,12 +11,10 @@ import ru.numerals.Money._
 object Test {
   def main (args : Array[String]) {
 
+    val bi = BigInt("2215000")
 
-    val bi = BigInt("1000201")
     println(bi,num2Str(bi))
-
-    println(ruMoney(bi))
-
+    println(bi,ruMoney(bi))
+    println(121,num2Str(121,Gender.Neuter) + " ведро")
   }
-
 }

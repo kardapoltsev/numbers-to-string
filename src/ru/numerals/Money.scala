@@ -17,7 +17,25 @@ object Money {
 
 
   /**
-   * 12345 => 123 руб. 45 коп.
+   * 12345 => сто двадцать три рубля сорок пять копеек
+   * @param x amount to be converted
+   */
+
+
+  def ruMoney (x : String) : String = ruMoney(BigInt(x))
+
+
+  /**
+   * 12345 => сто двадцать три рубля сорок пять копеек
+   * @param x amount to be converted
+   */
+
+
+  def ruMoney (x : Long) : String = ruMoney(BigInt(x))
+
+
+  /**
+   * 12345 => сто двадцать три рубля сорок пять копеек
    * @param x amount to be converted
    */
   def ruMoney (x: BigInt) = {
@@ -27,12 +45,12 @@ object Money {
     val kopNum = num2Str (k, Feminine)
     val rub = (r % 10).toInt match {
       case 1 => rubles (0)
-      case a if List (2, 3, 4) contains a => rubles (1)
+      case a if Set (2, 3, 4) contains a => rubles (1)
       case _ => rubles (2)
     }
     val kop = (k % 10).toInt match {
       case 1 => kopecks (0)
-      case a if List (2, 3, 4) contains a => kopecks (1)
+      case a if Set (2, 3, 4) contains a => kopecks (1)
       case _ => kopecks (2)
     }
     "%s %s %s %s" format(rubNum, rub, kopNum, kop)
