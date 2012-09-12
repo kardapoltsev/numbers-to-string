@@ -11,10 +11,10 @@ import ru.numerals.Money._
 object Test {
   def main (args : Array[String]) {
 
-    val bi = BigInt("2215000")
+    for (i <- 1000 to 1100) {
+      println(ruMoney(i))
+    }
+//          println(ruMoney(1022))
 
-    println(bi,num2Str(bi))
-    println(bi,ruMoney(bi))
-    println(121,num2Str(121,Gender.Neuter) + " ведро")
   }
 }

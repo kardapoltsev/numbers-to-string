@@ -38,31 +38,7 @@ object Numerals {
 
 
   /**
-   * Convert x to it's string equivalent
-   * @param x number to be converted
-   * @return converted number to string
-   */
-
-
-  def num2Str (x: String): String = num2Str (BigInt (x))
-
-
-  /**
-   * Convert x to it's string equivalent
-   * @param x number to be converted
-   * @return converted number to string
-   */
-
-
-  def num2Str (x: Long): String = num2Str (BigInt (x))
-
-
-  def num2Str (x: Long, gender: Gender): String =
-    num2Str (BigInt (x), gender)
-
-
-  /**
-   * Convert x to it's string equivalent
+   * Convert number to it's string equivalent
    * @param x number to be converted
    * @param gender providing right suffix to numeral string,
    *               default is Masculine
@@ -71,13 +47,36 @@ object Numerals {
    */
 
 
-  def num2Str (x: BigInt, gender: Gender = Masculine): String = {
+  def num2Str (x: BigInt, gender: Gender, capitalize : Boolean) =
+    convert (x,gender,capitalize)
+
+
+  def num2Str (x: BigInt) = convert (x)
+
+
+  def num2Str (x: String, gender : Gender, capitalize : Boolean) =
+    convert (BigInt (x),gender,capitalize)
+
+
+  def num2Str (x: String) = convert (BigInt (x))
+
+
+  def num2Str (x: Long, gender: Gender, capitalize : Boolean) =
+    convert(BigInt (x),gender,capitalize)
+
+
+  def num2Str (x: Long) = convert(BigInt (x))
+
+
+  private def convert (x: BigInt, gender: Gender = Masculine, capitalize : Boolean = false) = {
     require (x < BigInt (10).pow (MAX_POWER), "To large number...")
 
-    if (0 == x) "ноль"
+    val result = if (0 == x) "ноль"
     else if (x < 0)
       "минус " + positiveBigInt2Str (-x, gender) dropRight 1
     else positiveBigInt2Str (x, gender) dropRight 1
+
+    if (capitalize) result.capitalize else result
   }
 
 
