@@ -1,4 +1,4 @@
-import ru.numerals.Form
+import ru.numerals.Fractions
 import ru.numerals.Gender._
 import ru.numerals.Form._
 import ru.numerals.Part._
@@ -14,10 +14,12 @@ import ru.numerals.Fractions._
 
 object Test {
   def main (args : Array[String]) {
-    println (1, convert(BigInt(1),Masculine,Num))
-    println (1, convert(BigInt(1),Masculine,Adjective))
-    println (121, convert(BigInt(121),Masculine,Adjective))
-    println (113, convert(BigInt(113),Masculine,Adjective))
-    println (113123, convert(BigInt(113123),Masculine,Adjective))
+
+//    println (1000215, num2Str(BigInt(1000215)))
+//
+//    println (10115, ruMoney(10115))
+
+    println("23/457", Fractions.fraction2Str("23/457"))
+    println("21/457", Fractions.fraction2Str("21/457"))
   }
 }
