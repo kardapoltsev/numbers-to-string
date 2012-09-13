@@ -6,7 +6,7 @@ package ru.numerals
  * Time: 6:37 PM
  */
 
-object ruStrings {
+object RuStrings {
   val digitsNSM = List (
     List ("",         "десять ",        "",             ""),
     List ("один ",    "одиннадцать ",   "десять ",      "сто "),

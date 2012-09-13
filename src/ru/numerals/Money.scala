@@ -16,7 +16,7 @@ object Money {
   private val kopecks = List ("копейка", "копейки", "копеек")
 
 
-  def ruMoney (x : BigInt) = convertRuMoney(x)
+  def ruMoney (x: BigInt) = convertRuMoney (x)
 
 
   private def convertRuMoney (x: BigInt) = {

@@ -1,7 +1,3 @@
-import ru.numerals.Fractions
-import ru.numerals.Gender._
-import ru.numerals.Form._
-import ru.numerals.Part._
 import ru.numerals.Numerals._
 import ru.numerals.Money._
 import ru.numerals.Fractions._
@@ -13,13 +9,10 @@ import ru.numerals.Fractions._
  */
 
 object Test {
-  def main (args : Array[String]) {
+  def main (args: Array[String]) {
 
-//    println (1000215, num2Str(BigInt(1000215)))
-//
-//    println (10115, ruMoney(10115))
-
-    println("23/457", Fractions.fraction2Str("23/457"))
-    println("21/457", Fractions.fraction2Str("21/457"))
+    1 to 100 foreach (x => println (num2Str (BigInt (x))))
+    10000 to 10100 foreach (x => println (ruMoney (BigInt (x))))
+    1 to 100 foreach (x => println (fraction2Str ("%s/%s".format (x - 1, x))))
   }
 }
