@@ -13,7 +13,7 @@ object Test {
   def main (args: Array[String]) {
 
     println(ruMoney(BigInt(10013)))
-    println(money(BigInt(10013),"USD"))
+    println(money(BigInt(1000201),"USD"))
 
   }
 }

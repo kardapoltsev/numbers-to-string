@@ -14,6 +14,15 @@ import tools.nsc.io.Path
 object Money {
   import Gender._
 
+  private val RUB_GENDER = 1
+  private val RUB_ONE = 2
+  private val RUB_TWO = 3
+  private val RUB_MANY = 4
+  private val KOP_GENDER = 5
+  private val KOP_ONE = 6
+  private val KOP_TWO = 7
+  private val KOP_MANY = 8
+
 
   /**
    * Convert x to money using default currency RUR from money file
@@ -42,22 +51,22 @@ object Money {
 
     val r = x / 100
     val k = x % 100
-    val rubNum = num2Str (r, Masculine)
-    val kopNum = num2Str (k, Feminine)
+    val rubNum = num2Str (r, Gender.withName(cur(RUB_GENDER)))
+    val kopNum = num2Str (k, Gender.withName(cur(KOP_GENDER)))
     val rub = (r % 100).toInt match {
-      case a if (10 < a && 20 > a) => cur (3)
+      case a if (10 < a && 20 > a) => cur (RUB_MANY)
       case a => a % 10 match {
-        case 1 => cur (1)
-        case y if Set (2, 3, 4) contains y => cur (2)
-        case _ => cur (3)
+        case 1 => cur (RUB_ONE)
+        case y if Set (2, 3, 4) contains y => cur (RUB_TWO)
+        case _ => cur (RUB_MANY)
       }
     }
     val kop = (k % 100).toInt match {
-      case a if (10 < a && 20 > a) => cur (6)
+      case a if (10 < a && 20 > a) => cur (KOP_MANY)
       case a => a % 10 match {
-        case 1 => cur (4)
-        case y if Set (2, 3, 4) contains y => cur (5)
-        case _ => cur (6)
+        case 1 => cur (KOP_ONE)
+        case y if Set (2, 3, 4) contains y => cur (KOP_TWO)
+        case _ => cur (KOP_MANY)
       }
     }
     "%s %s %s %s" format(rubNum, rub, kopNum, kop)
@@ -92,7 +101,7 @@ object Money {
     if (r.isEmpty)
       throw new RuntimeException ("No currency in money file!")
 
-    val wrongLines = r.filter(7 != _.length)
+    val wrongLines = r.filter(9 != _.length)
     if (!wrongLines.isEmpty)
       throw new RuntimeException (
         "Wrong money file! Chech lines %s".format (wrongLines))
@@ -107,10 +116,11 @@ object Money {
 
       fileStream.write(
         "// Lines started with // will be ignored\n" +
-        "//\n" +
-        "// валюта:один:два:много:один:два:много\n" +
-        "//\nRUR:рубль:рубля:рублей:копейка:копейки:копеек\n" +
-        "USD:доллар:доллара:долларов:цент:цента:центов")
+          "//\n" +
+          "// валюта:род:один:два:много:род:один:два:много\n" +
+          "// род может быть Masculine, Feminine, Neuter" +
+          "//\nRUR:Masculine:рубль:рубля:рублей:Feminine:копейка:копейки:копеек\n" +
+          "USD:Masculine:доллар:доллара:долларов:Masculine:цент:цента:центов")
 
       fileStream.close()
 
