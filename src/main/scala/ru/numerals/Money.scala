@@ -3,7 +3,6 @@ package ru.numerals
 import ru.numerals.Numerals._
 import io.Source
 import java.io.{FileNotFoundException, BufferedWriter, FileWriter, File}
-import tools.nsc.io.Path
 
 /**
  * Created with IntelliJ IDEA.
