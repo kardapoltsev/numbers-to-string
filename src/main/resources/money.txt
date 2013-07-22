@@ -1,0 +1,6 @@
+// Lines started with // will be ignored
+//
+// валюта:род:один:два:много:род:один:два:много
+// род может быть Masculine, Feminine, Neuter//
+RUR:Masculine:рубль:рубля:рублей:Feminine:копейка:копейки:копеек
+USD:Masculine:доллар:доллара:долларов:Masculine:цент:цента:центов
