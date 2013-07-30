@@ -3,7 +3,7 @@ import Keys._
 
 object ApplicationBuild extends Build {
 
-  val appName         = "numerals-to-string"
+  val appName         = "numbers-to-string"
   val appVersion      = "1.0-SNAPSHOT"
 //	scalaVersion in ThisBuild := "2.10.0"
 //	scalacOptions in ThisBuild ++= Seq("-feature", "-deprecation", "-XX:MaxPermSize=256M")

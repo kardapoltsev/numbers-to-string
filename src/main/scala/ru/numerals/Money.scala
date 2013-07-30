@@ -90,11 +90,8 @@ object Money {
      Source.fromFile("money.txt").getLines().toList
       .filter(!_.startsWith("//")).map(_.split(":").toList)
     } catch {
-      case e : FileNotFoundException => {
-        createDefaultMoneyFile()
-        Source.fromFile("money.txt").getLines().toList
-          .filter(!_.startsWith("//")).map(_.split(":").toList)
-      }
+      case e : FileNotFoundException =>
+        defaultResource
     }
 
     if (r.isEmpty)
@@ -107,6 +104,12 @@ object Money {
 
     r
   }
+
+
+	private def defaultResource = List(
+		"RUR:Masculine:рубль:рубля:рублей:Feminine:копейка:копейки:копеек",
+		"USD:Masculine:доллар:доллара:долларов:Masculine:цент:цента:центов"
+	)
 
 
   private def createDefaultMoneyFile () {
