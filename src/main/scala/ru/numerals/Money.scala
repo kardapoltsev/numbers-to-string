@@ -72,7 +72,7 @@ object Money {
   }
 
 
-  private def getCurrency (cur : String) = {
+  private def getCurrency(cur : String) = {
     val currency = getResources.filter(cur == _.head)
 
     if (currency.isEmpty)
@@ -86,7 +86,7 @@ object Money {
 
 
   private def getResources = {
-   val r = try {
+   val r: List[List[String]] = try {
      Source.fromFile("money.txt").getLines().toList
       .filter(!_.startsWith("//")).map(_.split(":").toList)
     } catch {
@@ -107,8 +107,8 @@ object Money {
 
 
 	private def defaultResource = List(
-		"RUR:Masculine:рубль:рубля:рублей:Feminine:копейка:копейки:копеек",
-		"USD:Masculine:доллар:доллара:долларов:Masculine:цент:цента:центов"
+		"RUR:Masculine:рубль:рубля:рублей:Feminine:копейка:копейки:копеек".split(":").toList,
+		"USD:Masculine:доллар:доллара:долларов:Masculine:цент:цента:центов".split(":").toList
 	)
 
 
