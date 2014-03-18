@@ -13,16 +13,3 @@ object Gender extends Enumeration {
   val Neuter = Value (2)
 }
 
-
-object Form extends Enumeration {
-  type Form = Value
-  val Singular = Value (1)
-  val Plural = Value (2)
-}
-
-
-object Part extends Enumeration {
-  type Part = Value
-  val Num = Value(1)
-  val Adjective = Value (2)
-}
